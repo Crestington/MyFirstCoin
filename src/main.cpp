@@ -41,11 +41,11 @@ static CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
 static CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 20);
 static CBigNum bnProofOfStakeLimitTestNet(~uint256(0) >> 20);
 
-unsigned int nStakeMinAge =  60 * 60 * 3;	// minimum age for coin age: 3 hours
+unsigned int nStakeMinAge =  60 * 60 * 8;	// minimum age for coin age: 8 hours
 unsigned int nStakeMaxAge = 60 * 60 * 24 * 15;	// stake age of full weight: 15d
 unsigned int nStakeTargetSpacing = 120;			// 120 sec block spacing
 
-int64 nChainStartTime = 1405612283;
+int64 nChainStartTime = 1417210120;
 int nCoinbaseMaturity = 40;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2569,7 +2569,7 @@ bool LoadBlockIndex(bool fAllowNew)
             return false;
 
         // Genesis block
-        const char* pszTimestamp = "MyFirstCoin Developers 1409288032";
+        const char* pszTimestamp = "MyFirstCoin Developers 1417210120";
         CTransaction txNew;
         txNew.nTime = nChainStartTime;
         txNew.vin.resize(1);
@@ -2582,9 +2582,9 @@ bool LoadBlockIndex(bool fAllowNew)
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1409288032;
+        block.nTime    = 1417210120;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 0;
+        block.nNonce   = 178969;
         
         
               if ( false  && (block.GetHash() != hashGenesisBlock)) {
@@ -2610,7 +2610,7 @@ bool LoadBlockIndex(bool fAllowNew)
         printf("block.nTime = %u \n", block.nTime);
         printf("block.nNonce = %u \n", block.nNonce);
 
-        assert(block.hashMerkleRoot == uint256("0x"));
+        assert(block.hashMerkleRoot == uint256("0x82a8901945dd62153bc041eaa0222cbaf87f4bd398ab612f6dc5be75e5724435"));
 		assert(block.GetHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
 
         // Start new block file
