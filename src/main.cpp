@@ -41,12 +41,12 @@ static CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
 static CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 20);
 static CBigNum bnProofOfStakeLimitTestNet(~uint256(0) >> 20);
 
-unsigned int nStakeMinAge = 60 * 60 * 24 * 1;	// minimum age for coin age: 1d
-unsigned int nStakeMaxAge = 60 * 60 * 24 * 100;	// stake age of full weight: 100d
-unsigned int nStakeTargetSpacing = 60;			// 60 sec block spacing
+unsigned int nStakeMinAge =  60 * 60 * 3;	// minimum age for coin age: 3 hours
+unsigned int nStakeMaxAge = 60 * 60 * 24 * 15;	// stake age of full weight: 15d
+unsigned int nStakeTargetSpacing = 120;			// 120 sec block spacing
 
-int64 nChainStartTime = 1395376312;
-int nCoinbaseMaturity = 30;
+int64 nChainStartTime = 1405612283;
+int nCoinbaseMaturity = 40;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 CBigNum bnBestChainTrust = 0;
@@ -68,7 +68,7 @@ map<uint256, map<uint256, CDataStream*> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "CommunityCoin Signed Message:\n";
+const string strMessageMagic = "MyFirstCoin Signed Message:\n";
 
 double dHashesPerSec;
 int64 nHPSTimerStart;
@@ -794,7 +794,7 @@ int CMerkleTx::GetBlocksToMaturity() const
 {
     if (!(IsCoinBase() || IsCoinStake()))
         return 0;
-    return max(0, (nCoinbaseMaturity+20) - GetDepthInMainChain());
+    return max(0, (nCoinbaseMaturity+10) - GetDepthInMainChain());
 }
 
 
@@ -961,11 +961,11 @@ int generateMTRandom(unsigned int s, int range)
 // miner's coin base reward based on nBits
 int64 GetProofOfWorkReward(int nHeight, int64 nFees, uint256 prevHash)
 {
-	int64 nSubsidy = 0.0 * COIN;
+	int64 nSubsidy = 2000 * COIN;
 
-	if(nHeight == 1)
+	if(nHeight <= 100)
 	{
-		nSubsidy = 1000000000 * COIN;	// 1 billion coins, that all pow coins
+		nSubsidy = 190000 * COIN;	// 190 Thousand a Block
 		return nSubsidy + nFees;
 	}
 
@@ -980,16 +980,8 @@ int64 GetProofOfStakeReward(int64 nCoinAge, unsigned int nBits, unsigned int nTi
     int64 nRewardCoinYear;
 	nRewardCoinYear = MAX_MINT_PROOF_OF_STAKE;
 
-	if(nHeight < YEARLY_BLOCKCOUNT)
-		nRewardCoinYear = 30 * MAX_MINT_PROOF_OF_STAKE;
-	else if(nHeight < (2 * YEARLY_BLOCKCOUNT))
-		nRewardCoinYear = 20 * MAX_MINT_PROOF_OF_STAKE;
-	else if(nHeight < (3 * YEARLY_BLOCKCOUNT))
-		nRewardCoinYear = 10 * MAX_MINT_PROOF_OF_STAKE;
-	else if(nHeight < (4 * YEARLY_BLOCKCOUNT))
-		nRewardCoinYear = 5 * MAX_MINT_PROOF_OF_STAKE;
-	else if(nHeight < (5 * YEARLY_BLOCKCOUNT))
-		nRewardCoinYear = 2 * MAX_MINT_PROOF_OF_STAKE;
+	if(nHeight < 5 * YEARLY_BLOCKCOUNT)
+		nRewardCoinYear = 1 * MAX_MINT_PROOF_OF_STAKE;
 
     int64 nSubsidy = nCoinAge * nRewardCoinYear / 365;
 	if (fDebug && GetBoolArg("-printcreation"))
@@ -1516,8 +1508,8 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
     // Now that the whole chain is irreversibly beyond that time it is applied to all blocks except the
     // two in the chain that violate it. This prevents exploiting the issue against nodes in their
     // initial block download.
-    bool fEnforceBIP30 = true; // Always active in CommunityCoin
-    bool fStrictPayToScriptHash = true; // Always active in CommunityCoin
+    bool fEnforceBIP30 = true; // Always active in MyFirstCoin
+    bool fStrictPayToScriptHash = true; // Always active in MyFirstCoin
 
     //// issue here: it doesn't know the version
     unsigned int nTxPos;
@@ -2484,7 +2476,7 @@ bool CheckDiskSpace(uint64 nAdditionalBytes)
         string strMessage = _("Warning: Disk space is low!");
         strMiscWarning = strMessage;
         printf("*** %s\n", strMessage.c_str());
-        uiInterface.ThreadSafeMessageBox(strMessage, "CommunityCoin", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+        uiInterface.ThreadSafeMessageBox(strMessage, "MyFirstCoin", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
         StartShutdown();
         return false;
     }
@@ -2577,7 +2569,7 @@ bool LoadBlockIndex(bool fAllowNew)
             return false;
 
         // Genesis block
-        const char* pszTimestamp = "March 18, 2014, The Associated Press: Putin Signs Treaty To Add Crimea To Map Of Russia.";
+        const char* pszTimestamp = "MyFirstCoin Developers 1409288032";
         CTransaction txNew;
         txNew.nTime = nChainStartTime;
         txNew.vin.resize(1);
@@ -2590,9 +2582,26 @@ bool LoadBlockIndex(bool fAllowNew)
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1395376332;
+        block.nTime    = 1409288032;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 13577531;
+        block.nNonce   = 0;
+        
+        
+              if ( false  && (block.GetHash() != hashGenesisBlock)) {
+	 
+		// This will figure out a valid hash and Nonce if you're
+		// creating a different genesis block:
+		    uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+		    while (block.GetHash() > hashTarget)
+		       {
+		           ++block.nNonce;
+		           if (block.nNonce == 0)
+		           {
+		               printf("NONCE WRAPPED, incrementing time");
+		               ++block.nTime;
+		           }
+		       }
+        }
 
         //// debug print
         block.print();
@@ -2601,7 +2610,7 @@ bool LoadBlockIndex(bool fAllowNew)
         printf("block.nTime = %u \n", block.nTime);
         printf("block.nNonce = %u \n", block.nNonce);
 
-        assert(block.hashMerkleRoot == uint256("fdcdf1b375026822dc0b13a3a8fea97f48d1fb720858dbfb176e7d338cdf619b"));
+        assert(block.hashMerkleRoot == uint256("0x"));
 		assert(block.GetHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
 
         // Start new block file

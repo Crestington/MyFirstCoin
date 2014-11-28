@@ -161,13 +161,13 @@ void OverviewPage::unlockWallet()
         dlg.setModel(model);
         if(dlg.exec() == QDialog::Accepted)
         {
-            ui->unlockWalletButton->setText(QString("Lock Wallet"));
+            ui->unlockWalletButton->setText(QString("Lock wallet"));
         }
     }
     else
     {
         model->setWalletLocked(true);
-        ui->unlockWalletButton->setText(QString("Unlock Wallet"));
+        ui->unlockWalletButton->setText(QString("Unlock wallet"));
     }
 }
 
@@ -203,9 +203,9 @@ void OverviewPage::setModel(WalletModel *model)
             ui->unlockWalletButton->setDisabled(true);
         }
         connect(ui->unlockWalletButton, SIGNAL(clicked()), this, SLOT(unlockWallet()));
-     }
+    }
 
-    // update the display unit, to not use the default ("ECC")
+    // update the display unit, to not use the default ("MFC")
     updateDisplayUnit();
 }
 
