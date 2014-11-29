@@ -5,21 +5,16 @@
 USE_UPNP:=1
 USE_IPV6:=1
 
-INCLUDEPATHS= \
- -I"C:\deps\boost" \
- -I"C:\deps\db\build_unix" \
- -I"C:\deps\ssl\include
+INCLUDEPATHS= 
  
-LIBPATHS= \
- -L"C:\deps\boost\stage/lib" \
- -L"C:\deps\db\build_unix" \
- -L"C:\deps\ssl" 
+LIBPATHS= 
+
 
 LIBS= \
- -l boost_system-mgw46-mt-1_53 \
- -l boost_filesystem-mgw46-mt-1_53 \
- -l boost_program_options-mgw46-mt-1_53 \
- -l boost_thread-mgw46-mt-1_53 \
+ -l boost_system-mgw48-mt-s-1_53 \
+ -l boost_filesystem-mgw48-mt-s-1_53 \
+ -l boost_program_options-mgw48-mt-s-1_53 \
+ -l boost_thread-mgw48-mt-s-1_53 \
  -l db_cxx \
  -l ssl \
  -l crypto

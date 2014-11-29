@@ -139,7 +139,7 @@ OBJS= \
 all: MyFirstCoind
 
 test check: test_MyFirstCoin FORCE
-	./test_MyFirstCoin
+	./test_BottleCaps
 
 # auto-generated dependencies:
 -include obj/*.P

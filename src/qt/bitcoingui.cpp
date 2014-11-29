@@ -68,17 +68,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     notificator(0),
     rpcConsole(0)
 {
-    
-    
-                setStyleSheet("color: darkred;"
-    "font: 75 bold 10pt;"
-"background-image: url(:/background/res/images/abstract-background-13.png);");
-    
-    
-   QString ss("QMenuBar::item { background-color: transparent; color: darkred }"); // Use background-color instead of background
-     menuBar()->setStyleSheet(ss);
-     
-     
     resize(850, 550);
     setWindowTitle(tr("MyFirstCoin") + " - " + tr("Wallet"));
 #ifndef Q_OS_MAC
@@ -122,20 +111,10 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     centralWidget = new QStackedWidget(this);
     centralWidget->addWidget(overviewPage);
-    overviewPage->setStyleSheet("background-color: transparent");
-    overviewPage->setStyleSheet("background: transparent");
     centralWidget->addWidget(transactionsPage);
-    transactionsPage->setStyleSheet("background-color: transparent");
-    transactionsPage->setStyleSheet("background: transparent");
     centralWidget->addWidget(addressBookPage);
-    addressBookPage->setStyleSheet("background-color: transparent");
-    addressBookPage->setStyleSheet("background: transparent");
     centralWidget->addWidget(receiveCoinsPage);
-    receiveCoinsPage->setStyleSheet("background-color: transparent");
-    receiveCoinsPage->setStyleSheet("background: transparent");
     centralWidget->addWidget(sendCoinsPage);
-    sendCoinsPage->setStyleSheet("background-color: transparent");
-    sendCoinsPage->setStyleSheet("background: transparent");
     setCentralWidget(centralWidget);
 
     // Create status bar
@@ -181,7 +160,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     statusBar()->addPermanentWidget(frameBlocks);
 
     syncIconMovie = new QMovie(":/movies/update_spinner", "mng", this);
-	// this->setStyleSheet("background-color: #effbef;");
+	// this->setStyleSheet("background-color: #ceffee;");
 
     // Clicking on a transaction on the overview page simply sends you to transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), this, SLOT(gotoHistoryPage()));
@@ -220,13 +199,13 @@ void BitcoinGUI::createActions()
     overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);
 
-    sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Send MFC"), this);
-    sendCoinsAction->setToolTip(tr("Send MFC to a MyFirstCoin address"));
+    sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Send coins"), this);
+    sendCoinsAction->setToolTip(tr("Send coins to a MyFirstCoin address"));
     sendCoinsAction->setCheckable(true);
     sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
     tabGroup->addAction(sendCoinsAction);
 
-    receiveCoinsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Receive MFC"), this);
+    receiveCoinsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Receive coins"), this);
     receiveCoinsAction->setToolTip(tr("Show the list of addresses for receiving payments"));
     receiveCoinsAction->setCheckable(true);
     receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
@@ -327,7 +306,7 @@ void BitcoinGUI::createMenuBar()
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);
 
-	// QString ss("QMenuBar::item { background-color: #effbef; color: black }"); 
+	// QString ss("QMenuBar::item { background-color: #ceffee; color: black }"); 
     // appMenuBar->setStyleSheet(ss);
 }
 
@@ -432,7 +411,7 @@ void BitcoinGUI::createTrayIcon()
     // Note: On Mac, the dock icon is used to provide the tray's functionality.
     MacDockIconHandler *dockIconHandler = MacDockIconHandler::instance();
     trayIconMenu = dockIconHandler->dockMenu();
-	dockIconHandler->setMainWindow((QMainWindow*)this);
+    dockIconHandler->setMainWindow((QMainWindow *)this);
 #endif
 
     // Configuration of the tray icon (or dock icon) icon menu

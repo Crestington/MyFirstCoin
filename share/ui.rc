@@ -1,4 +1,4 @@
-MyFirstCoin               ICON    "pixmaps/MyFirstCoin.ico"
+BottleCaps               ICON    "pixmaps/BottleCaps.ico"
 
 #include "wx/msw/wx.rc"
 
