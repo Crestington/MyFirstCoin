@@ -1,5 +1,5 @@
 
-MyFirstCoin - COMM
+MyFirstCoin - MFC
 
 MyFirstCoin is a pure PoS coin which generates coins through PoS blocks. Except the first block where it generates the initial 1 billion coins, no PoW mining will get any coins. The 1 billion coins will be distributed equally to 1000 individuals with 1 million coins each, completely free based on the subscriptions in facebook, cryptocointalk and ecoiner website. 
 
