@@ -6,21 +6,25 @@ USE_UPNP:=1
 USE_IPV6:=1
 
 INCLUDEPATHS= \
- -I"C:\deps\boost" \
- -I"C:\deps\db\build_unix" \
- -I"C:\deps\ssl\include"
+ -I"$(CURDIR)" \
+ -I"/c/deps/boost_1_55_0" \
+ -I"/c/deps" \
+ -I"/c/deps/db-4.8.30.NC/build_unix" \
+ -I"/c/deps/openssl-1.0.1g/include"
  
 LIBPATHS= \
- -L"C:\deps\boost\stage/lib" \
- -L"C:\deps\db\build_unix" \
- -L"C:\deps\ssl"
+ -L"$(CURDIR)/leveldb" \
+ -L"/c/deps/boost_1_55_0/stage/lib" \
+ -L"/c/deps/miniupnpc" \
+ -L"/c/deps/db-4.8.30.NC/build_unix" \
+ -L"/c/deps/openssl-1.0.1g"
 
 
 LIBS= \
- -l boost_system-mgw48-mt-s-1_53 \
- -l boost_filesystem-mgw48-mt-s-1_53 \
- -l boost_program_options-mgw48-mt-s-1_53 \
- -l boost_thread-mgw48-mt-s-1_53 \
+ -l boost_system-mgw48-mt-s-1_55 \
+ -l boost_filesystem-mgw48-mt-s-1_55 \
+ -l boost_program_options-mgw48-mt-s-1_55 \
+ -l boost_thread-mgw48-mt-s-1_55 \
  -l db_cxx \
  -l ssl \
  -l crypto
@@ -28,7 +32,7 @@ LIBS= \
 DEFS=-DWIN32 -D_WINDOWS -DBOOST_THREAD_USE_LIB -DBOOST_SPIRIT_THREADSAFE -D__NO_SYSTEM_INCLUDES
 DEBUGFLAGS=-g
 CFLAGS=-mthreads -O2 -msse2 -w -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter $(DEBUGFLAGS) $(DEFS) $(INCLUDEPATHS)
-LDFLAGS=-Wl,--dynamicbase -Wl,--nxcompat
+LDFLAGS=-Wl,--dynamicbase -Wl,--nxcompat,--large-address-aware -static
 
 TESTDEFS = -DTEST_DATA_DIR=$(abspath test/data)
 
